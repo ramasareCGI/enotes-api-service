@@ -1,6 +1,5 @@
 package com.service.demo.service.impl;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,8 +42,8 @@ public class CategoryServiceImpl implements CategoryService {
 		
 		Category category = mapper.map(categorydto, Category.class);
 		category.setIsDeleted(true);
-		category.setCreatedBy(1);
-		category.setCreatedOn(new Date());
+//		category.setCreatedBy(1);
+//		category.setCreatedOn(new Date());
 		Category saveCategory = categoryRepository.save(category);
 		if (ObjectUtils.isArray(saveCategory)) {
 			return false;
