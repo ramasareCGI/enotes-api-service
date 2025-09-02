@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.service.demo.dto.CategoryDto;
 import com.service.demo.dto.CategoryResponseName;
-import com.service.demo.exception.ResourceNotFoundException;
 import com.service.demo.service.CategoryService;
 
 import lombok.extern.slf4j.Slf4j;
