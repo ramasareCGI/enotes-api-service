@@ -40,6 +40,8 @@ public class CategoryController {
 
 	@GetMapping("/category")
 	public ResponseEntity<?> getALlCategory() {
+//		String str=null;
+//		str.toUpperCase();
 		List<CategoryDto> allCategory = categoryService.getAllCategory();
 		if (org.springframework.util.CollectionUtils.isEmpty(allCategory)) {
 			return ResponseEntity.noContent().build();
