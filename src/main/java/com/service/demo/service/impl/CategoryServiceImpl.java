@@ -12,6 +12,7 @@ import org.springframework.util.ObjectUtils;
 import com.service.demo.dto.CategoryDto;
 import com.service.demo.dto.CategoryResponseName;
 import com.service.demo.entity.Category;
+import com.service.demo.exception.ResourceNotFoundException;
 import com.service.demo.repository.CategoryRepository;
 import com.service.demo.service.CategoryService;
 
@@ -33,7 +34,7 @@ public class CategoryServiceImpl implements CategoryService {
 //		category.setIsActive(categorydto.getIsActive());
 //
 		Category category = mapper.map(categorydto, Category.class);
-		category.setIsDeleted(false);
+		category.setIsDeleted(true);
 		category.setCreatedBy(1);
 		category.setCreatedOn(new Date());
 		Category saveCategory = categoryRepository.save(category);
@@ -61,11 +62,11 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public CategoryDto getCategoryById(Integer id) {
-		Optional<Category> findCategoryById = categoryRepository.findByIdAndIsDeletedFalse(id);
-		if (findCategoryById.isPresent()) {
-			Category category = findCategoryById.get();
-			return mapper.map(category, CategoryDto.class);
+	public CategoryDto getCategoryById(Integer id) throws Exception {
+		Category findCategoryById = categoryRepository.findByIdAndIsDeletedFalse(id).orElseThrow(()->new ResourceNotFoundException("Category not foun with id ="+id));
+		if (ObjectUtils.isEmpty(findCategoryById)) {
+			//Category category = findCategoryById.get();
+			return mapper.map(findCategoryById, CategoryDto.class);
 		}
 		return null;
 	}

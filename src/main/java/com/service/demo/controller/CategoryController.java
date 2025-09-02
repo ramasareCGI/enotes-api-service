@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.service.demo.dto.CategoryDto;
 import com.service.demo.dto.CategoryResponseName;
+import com.service.demo.exception.ResourceNotFoundException;
 import com.service.demo.service.CategoryService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/category")
 public class CategoryController {
@@ -61,21 +65,23 @@ public class CategoryController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getCategoryDetailsById(@PathVariable Integer id) {
+	public ResponseEntity<?> getCategoryDetailsById(@PathVariable Integer id) throws Exception {
+
 		CategoryDto categoryDto = categoryService.getCategoryById(id);
 		if (ObjectUtils.isEmpty(categoryDto)) {
 			return new ResponseEntity<>("category not found with ID =" + id, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(categoryDto, HttpStatus.FOUND);
+		return new ResponseEntity<>(id, HttpStatus.OK);
 
 	}
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteCategoryDetailsById(@PathVariable Integer id) {
 		Boolean deleted = categoryService.deleteCategoryById(id);
 		if (deleted) {
 			return new ResponseEntity<>("category deleted success =" + id, HttpStatus.OK);
 		}
-		return new ResponseEntity<>("category ID not found ="+id, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>("category ID not found =" + id, HttpStatus.NOT_FOUND);
 
 	}
 }
