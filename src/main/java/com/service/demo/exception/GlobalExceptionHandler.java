@@ -51,5 +51,10 @@ public class GlobalExceptionHandler {
 		log.error("GlobalExceptionHandler :: handleValidationException ::", e.getMessage());
 		return new ResponseEntity<>(e.getError(), HttpStatus.BAD_REQUEST);
 	}
+	@ExceptionHandler(ExitDetaException.class)
+	public ResponseEntity<?> handleExitDetaException(ExitDetaException e) {
+		log.error("GlobalExceptionHandler :: handleExitDetaException ::", e.getMessage());
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+	}
 
 }
