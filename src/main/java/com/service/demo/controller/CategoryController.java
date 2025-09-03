@@ -2,8 +2,10 @@ package com.service.demo.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.service.demo.dto.CategoryDto;
 import com.service.demo.dto.CategoryResponseName;
 import com.service.demo.service.CategoryService;
+import com.service.demo.util.CommonUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,20 +27,20 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/v1/category")
 public class CategoryController {
 
+	@Autowired
 	private CategoryService categoryService;
 
-	public CategoryController(CategoryService categoryService) {
-		super();
-		this.categoryService = categoryService;
-	}
+	
 
 	@PostMapping("/savecategory")
 	public ResponseEntity<?> saveCategory(@RequestBody CategoryDto categorydto) {
 		Boolean saveCategory = categoryService.saveCategory(categorydto);
 		if (saveCategory) {
-			return new ResponseEntity<>("save success", HttpStatus.CREATED);
+			return CommonUtil.createBuildResponseMessage("success",HttpStatus.CREATED );
+			// return new ResponseEntity<>("save success", HttpStatus.CREATED);
 		} else {
-			return new ResponseEntity<>("not saved", HttpStatus.INTERNAL_SERVER_ERROR);
+			return CommonUtil.createErrorMessageResponse("not saved ", HttpStatus.INTERNAL_SERVER_ERROR);
+			// return new ResponseEntity<>("not saved", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -46,17 +49,20 @@ public class CategoryController {
 //		String str=null;
 //		str.toUpperCase();
 		List<CategoryDto> allCategory = categoryService.getAllCategory();
-		if (org.springframework.util.CollectionUtils.isEmpty(allCategory)) {
+		
+		if (CollectionUtils.isEmpty(allCategory)) {
+			
 			return ResponseEntity.noContent().build();
 		} else {
-			return new ResponseEntity<>(allCategory, HttpStatus.OK);
+			return CommonUtil.createBuildResponse(allCategory, HttpStatus.OK);
+			// return new ResponseEntity<>(allCategory, HttpStatus.OK);
 		}
 	}
 
 	@GetMapping("/active-category")
 	public ResponseEntity<?> getActiveCategory() {
 		List<CategoryResponseName> allCategory = categoryService.getActiveCategory();
-		if (org.springframework.util.CollectionUtils.isEmpty(allCategory)) {
+		if (CollectionUtils.isEmpty(allCategory)) {
 			return ResponseEntity.noContent().build();
 		} else {
 			return new ResponseEntity<>(allCategory, HttpStatus.OK);
@@ -68,9 +74,11 @@ public class CategoryController {
 
 		CategoryDto categoryDto = categoryService.getCategoryById(id);
 		if (ObjectUtils.isEmpty(categoryDto)) {
-			return new ResponseEntity<>("category not found with ID =" + id, HttpStatus.NOT_FOUND);
+		return	CommonUtil.createErrorMessageResponse("Internal Server Error",  HttpStatus.NOT_FOUND);
+			//return new ResponseEntity<>("category not found with ID =" + id, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(id, HttpStatus.OK);
+		return	CommonUtil.createBuildResponse(categoryDto, HttpStatus.OK);
+		//return new ResponseEntity<>(id, HttpStatus.OK);
 
 	}
 
@@ -78,9 +86,11 @@ public class CategoryController {
 	public ResponseEntity<?> deleteCategoryDetailsById(@PathVariable Integer id) {
 		Boolean deleted = categoryService.deleteCategoryById(id);
 		if (deleted) {
-			return new ResponseEntity<>("category deleted success =" + id, HttpStatus.OK);
+		return CommonUtil.createBuildResponse("Category deleted success", HttpStatus.OK);
+			//return new ResponseEntity<>("category deleted success =" + id, HttpStatus.OK);
 		}
-		return new ResponseEntity<>("category ID not found =" + id, HttpStatus.NOT_FOUND);
+		return	CommonUtil.createErrorMessageResponse("Category not  deleted",  HttpStatus.NOT_FOUND);
+		//return new ResponseEntity<>("category ID not found =" + id, HttpStatus.NOT_FOUND);
 
 	}
 }

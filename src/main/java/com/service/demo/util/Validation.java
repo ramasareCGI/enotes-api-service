@@ -14,17 +14,19 @@ import com.service.demo.exception.ValidationException;
 
 @Component
 public class Validation {
+	
 	public void categoryValidation(CategoryDto categoryDto) 
 	{
 		
-		Map<String, Object> map=new LinkedHashMap<String, Object>();
+		Map<String, Object> map=new LinkedHashMap<>();
+		
 		if(ObjectUtils.isEmpty(categoryDto))
 		{
 			throw new IllegalArgumentException("category object shuold 't be null or Empty");
 		}
 		else
 		{
-			//validation name field
+ 			//validation name field
 			if(ObjectUtils.isEmpty(categoryDto.getName()))
 			{
 				//throw new IllegalArgumentException("name field is null or Empty");

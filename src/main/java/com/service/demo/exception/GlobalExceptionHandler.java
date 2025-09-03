@@ -12,6 +12,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.service.demo.util.CommonUtil;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -20,13 +22,14 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(NullPointerException.class)
 	public ResponseEntity<?> handleNullPointerException(Exception e) {
-		return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		//return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		return CommonUtil.createErrorMessageResponse(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR );
 	}
 
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public ResponseEntity<?> handleResourceNotFoundException(Exception e) {
 		log.error("GlobalExceptionHandler :: handleResourceNotFoundException ::", e.getMessage());
-		return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		return CommonUtil.createErrorMessageResponse(e.getMessage(), HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
@@ -43,18 +46,18 @@ public class GlobalExceptionHandler {
 		});
 
 		log.error("GlobalExceptionHandler :: handleMethodArgumentNotValidException ::", e.getMessage());
-		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+		return CommonUtil.createErrorMessageResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(ValidationException.class)
 	public ResponseEntity<?> handleValidationException(ValidationException e) {
 		log.error("GlobalExceptionHandler :: handleValidationException ::", e.getMessage());
-		return new ResponseEntity<>(e.getError(), HttpStatus.BAD_REQUEST);
+		return CommonUtil.createErrorResponse(e.getError(), HttpStatus.BAD_REQUEST);
 	}
 	@ExceptionHandler(ExitDetaException.class)
 	public ResponseEntity<?> handleExitDetaException(ExitDetaException e) {
 		log.error("GlobalExceptionHandler :: handleExitDetaException ::", e.getMessage());
-		return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+		return CommonUtil.createErrorMessageResponse(e.getMessage(), HttpStatus.CONFLICT);
 	}
 
 }

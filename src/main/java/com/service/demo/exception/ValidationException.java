@@ -7,7 +7,7 @@ public class ValidationException extends RuntimeException {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	//private static final long serialVersionUID = 1L;
 	Map<String, Object> error;
 
 	public ValidationException(Map<String, Object> error) {
