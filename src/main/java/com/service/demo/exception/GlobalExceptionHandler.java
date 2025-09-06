@@ -11,6 +11,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import com.service.demo.util.CommonUtil;
 
@@ -53,6 +54,11 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<?> handleValidationException(ValidationException e) {
 		log.error("GlobalExceptionHandler :: handleValidationException ::", e.getMessage());
 		return CommonUtil.createErrorResponse(e.getError(), HttpStatus.BAD_REQUEST);
+	}
+	@ExceptionHandler(MissingServletRequestPartException.class)
+	public ResponseEntity<?> handleMissingServletRequestPartException(Exception e) {
+		log.error("GlobalExceptionHandler :: missingServletRequestPartException ::", e.getMessage());
+		return CommonUtil.createErrorMessageResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 	@ExceptionHandler(ExitDetaException.class)
 	public ResponseEntity<?> handleExitDetaException(ExitDetaException e) {

@@ -1,6 +1,7 @@
 package com.service.demo.dto;
 
 import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ public class CategoryDto {
 //	@NotBlank
 //	@Min(value = 5)
 //	@Max(value = 100)
+	private Integer id;
 	private String name;
 	
 //	@NotBlank
@@ -27,4 +29,5 @@ public class CategoryDto {
 	private Integer updatedBy;
 	private Date updateOn;
 
+	
 }

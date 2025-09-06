@@ -1,6 +1,5 @@
 package com.service.demo.entity;
 
-
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Entity;
@@ -8,6 +7,7 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,18 +19,19 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Category extends BaseModel {
+public class Notes extends BaseModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String name;
+	private String title;
 	private String description;
-	private Boolean isActive;
-	private Boolean isDeleted;
 	
-//	@OneToMany
-//    @JoinColumn(name = "category_id") // we need to duplicate the physical information
-//    private List<Notes> items;
+	@ManyToOne
+	private Category categorydto;
+	
+	@ManyToOne
+	private FileDetails fileDetails;
 
+	
 }
